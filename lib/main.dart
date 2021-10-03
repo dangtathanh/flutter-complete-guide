@@ -17,7 +17,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(secondary: Colors.amber),
+        primaryColor: Colors.purple,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple,).copyWith(secondary: Colors.amber),
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -25,24 +41,21 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   // String? titleInput;
   // String? ammountInput;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-class _MyHomePageState extends State<MyHomePage> {
 
+class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    Transaction(id: "t1", title: "title 1", amount: 20.11),
-    Transaction(id: "t2", title: "title 2", amount: 65.23),
-    Transaction(id: "t3", title: "title 3", amount: 19.39),
-    Transaction(id: "t4", title: "title 4", amount: 58.46),
+    // Transaction(id: "t1", title: "New shoes", amount: 20.11),
+    // Transaction(id: "t2", title: "Weekly fees", amount: 65.23),
   ];
 
   void _addNew(String title, double amount) {
-    final newTx = new Transaction(
+    final newTx = Transaction(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
@@ -52,20 +65,26 @@ class _MyHomePageState extends State<MyHomePage> {
       _userTransaction.add(newTx);
     });
   }
-  void _startAddNew(BuildContext btx){
-    showModalBottomSheet(context: btx, builder: (_) {
-      return NewTransaction(_addNew);
-    },);
+
+  void _startAddNew(BuildContext btx) {
+    showModalBottomSheet(
+      context: btx,
+      builder: (_) {
+        return NewTransaction(_addNew);
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Personal Expenses"),
+        title: const Text(
+          "Personal Expenses",
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () => _startAddNew(context),
           )
         ],
@@ -89,7 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
         onPressed: () => _startAddNew(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
