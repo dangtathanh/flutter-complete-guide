@@ -105,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+
+    final appBar = AppBar(
         title: const Text(
           "Personal Expenses",
         ),
@@ -116,16 +116,28 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => _startAddNew(context),
           )
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ignore: sized_box_for_whitespace
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _delete),
-          ],
+      );
+    
+    final mediaQuery = MediaQuery.of(context);
+
+    return Scaffold(
+      appBar: appBar,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.3,
+                child: Chart(_recentTransactions),
+              ),
+              SizedBox(              
+                height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
+                child: TransactionList(_userTransactions, _delete),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

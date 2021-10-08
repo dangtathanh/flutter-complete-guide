@@ -4,8 +4,7 @@ import 'package:intl/intl.dart';
 class NewTransaction extends StatefulWidget {
   final Function addNew;
 
-
-  NewTransaction(this.addNew);
+  const NewTransaction(this.addNew);
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -14,7 +13,7 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  DateTime? _selectedDate = null;
+  DateTime? _selectedDate;
 
   void _submitData() {
     final enteredTitle = _titleController.text;
@@ -59,54 +58,61 @@ class _NewTransactionState extends State<NewTransaction> {
         textStyle: TextStyle(
       color: Theme.of(context).primaryColor,
     ));
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: "Title"),
-              controller: _titleController,
-              onSubmitted: (_) => _submitData(),
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: "Amount"),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              controller: _amountController,
-              onSubmitted: (_) => _submitData(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No Date Shosen!'
-                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate as DateTime)}',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _presentDatePicker,
-                    child: const Text('Choose Date'),
-                    style: TextButton.styleFrom(
-                      textStyle: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: "Title"),
+                controller: _titleController,
+                onSubmitted: (_) => _submitData(),
+              ),
+              TextField(
+                decoration: const InputDecoration(labelText: "Amount"),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: _amountController,
+                onSubmitted: (_) => _submitData(),
+              ),
+              SizedBox(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No Date Shosen!'
+                            : 'Picked Date: ${DateFormat.yMd().format(_selectedDate as DateTime)}',
                       ),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: _presentDatePicker,
+                      child: const Text('Choose Date'),
+                      style: TextButton.styleFrom(
+                        textStyle: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: style,
-              child: const Text("Add transaction"),
-              onPressed: _submitData,
-            )
-          ],
+              ElevatedButton(
+                style: style,
+                child: const Text("Add transaction"),
+                onPressed: _submitData,
+              )
+            ],
+          ),
         ),
       ),
     );
